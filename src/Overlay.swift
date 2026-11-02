@@ -46,16 +46,27 @@ final class OverlayController {
                                                        kCGNullWindowID) as? [[String: Any]] else { return false }
         let referenceMaxY = NSScreen.screens.first(where: { $0.frame.origin == .zero })?.frame.maxY ?? screen.frame.maxY
         let flippedY = referenceMaxY - screen.frame.maxY
+        let safeTop = screen.safeAreaInsets.top
+        let full = CGRect(x: screen.frame.minX, y: flippedY,
+                          width: screen.frame.width, height: screen.frame.height)
+        // 带刘海的机器上，原生全屏窗口不覆盖菜单栏那 32pt：
+        // 起点下移 safeTop、高度少 safeTop，同样算全屏
+        let belowNotch = CGRect(x: full.minX, y: full.minY + safeTop,
+                                width: full.width, height: full.height - safeTop)
+
+        func matches(_ rect: CGRect, _ target: CGRect) -> Bool {
+            abs(rect.minX - target.minX) < 2 &&
+            abs(rect.minY - target.minY) < 2 &&
+            abs(rect.width - target.width) < 2 &&
+            abs(rect.height - target.height) < 2
+        }
 
         for window in windows {
             guard let layer = window[kCGWindowLayer as String] as? Int, layer == 0 else { continue }
             guard let dict = window[kCGWindowBounds as String] as? [String: CGFloat] else { continue }
             let rect = CGRect(x: dict["X"] ?? -1, y: dict["Y"] ?? -1,
                               width: dict["Width"] ?? 0, height: dict["Height"] ?? 0)
-            if abs(rect.minX - screen.frame.minX) < 1,
-               abs(rect.minY - flippedY) < 1,
-               abs(rect.width - screen.frame.width) < 1,
-               abs(rect.height - screen.frame.height) < 1 {
+            if matches(rect, full) || matches(rect, belowNotch) {
                 return true
             }
         }

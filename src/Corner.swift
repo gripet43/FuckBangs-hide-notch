@@ -56,7 +56,7 @@ final class CornerController {
         window.backgroundColor = .clear
         window.ignoresMouseEvents = true
         window.level = NSWindow.Level(rawValue: -1)
-        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle, .fullScreenAuxiliary]
+        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle, .fullScreenNone]
         window.animationBehavior = .none
 
         let view = CornerView(frame: NSRect(origin: .zero, size: frame.size))
