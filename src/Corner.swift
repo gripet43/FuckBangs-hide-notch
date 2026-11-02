@@ -43,13 +43,20 @@ final class CornerController {
         views.removeAll()
     }
 
+    /// 切换空间后补一次置顶。只在空间变化时做，避免每秒与转场动画抢时机。
+    func repair() {
+        for (_, window) in windows where !window.isVisible {
+            window.orderFrontRegardless()
+        }
+    }
+
     private func makeWindow(frame: NSRect, radius: CGFloat, topInset: CGFloat) -> (NSWindow, CornerView) {
         let window = NSWindow(contentRect: frame, styleMask: .borderless, backing: .buffered, defer: false)
         window.isOpaque = false
         window.backgroundColor = .clear
         window.ignoresMouseEvents = true
         window.level = NSWindow.Level(rawValue: -1)
-        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
+        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle, .fullScreenAuxiliary]
         window.animationBehavior = .none
 
         let view = CornerView(frame: NSRect(origin: .zero, size: frame.size))
@@ -88,7 +95,6 @@ final class CornerController {
                 }
                 view.radius = radius
                 view.topInset = topInset
-                if !window.isVisible { window.orderFrontRegardless() }
             } else {
                 let (window, view) = makeWindow(frame: frame, radius: radius, topInset: topInset)
                 windows[id] = window

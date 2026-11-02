@@ -73,6 +73,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self, selector: #selector(handleShowNotification),
             name: showNotification, object: nil)
 
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(handleSpaceChange),
+            name: NSWorkspace.activeSpaceDidChangeNotification, object: nil)
+
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self else { return }
             self.refresh()
@@ -141,6 +145,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func handleShowNotification() {
         DispatchQueue.main.async { [weak self] in self?.panel.show() }
+    }
+
+    @objc private func handleSpaceChange() {
+        refresh()
+        corners.repair()
     }
 
     private func refresh() {
