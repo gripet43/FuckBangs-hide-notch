@@ -68,12 +68,11 @@ swift tools/make_icon.swift Assets/icon_1024.png
 ## 实现要点
 
 - 浮层是 `NSWindow`，层级 `CGWindowLevelForKey(.mainMenuWindow) - 1`，垫在菜单栏下面、普通窗口上面，`ignoresMouseEvents` 让点击穿透
-- 屏幕圆角用另一个窗口，层级 `-1`（桌面之上、窗口之下），用 even-odd 填充「整屏矩形 − 圆角矩形」只留四个角
-- **顶部黑条也服从同一个圆角矩形**：黑条在四角跟着收进角落，露出壁纸形成黑色与内容的交界，四角才看得出弧度。否则黑压黑，顶部永远是直角
+- 圆角由另一个窗口绘制，层级 `-1`（桌面之上、窗口之下），绘制 `evenOdd(整屏矩形 − 正文矩形)`：正文矩形从状态栏下沿开始，四个角同一个半径
+- 圆角窗口的 `collectionBehavior` **必须用 `.fullScreenNone`**。如果声明 `.fullScreenAuxiliary` 让它跟进全屏 Space，那么从全屏滑回桌面时，窗口能否随桌面一起滑入就取决于 WindowServer 的遮挡剔除——Chrome 的合成层不透明会触发剔除（圆角要等转场结束），Safari 的半透明材质不会（圆角中途就出现）。同一个 bug 会表现为"看应用下菜"
+- 全屏检测不能靠 `visibleFrame`（不随全屏空间变化）。在 `CGWindowList` 里找 layer 0 窗口时，高度要同时接受"覆盖整屏"和"刘海下方（少 `safeAreaInsets.top`）"两种几何，否则带刘海机型永远匹配不上
 - 圆角窗口**不能用带 `canBecomeKey = false` 的子类**，会导致内容不参与合成、画了看不见；用原生 `NSWindow` 即可
 - `NSWindow` 默认的 `constrainFrameRect` 会把窗口压到菜单栏下方，顶部黑条那个窗口必须重写
-- 全屏检测不能靠 `visibleFrame`（不随全屏空间变化），改为在 `CGWindowList` 里找尺寸等于整屏的 layer 0 窗口
-- 全屏时菜单栏消失会让浮层失去意义，因此检测到就收起
 
 ## 许可
 
