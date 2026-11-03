@@ -1,79 +1,139 @@
-# 干掉刘海
+# 干掉刘海 · Hide the MacBook Notch
 
-把带刘海 MacBook 的菜单栏变成一条完整的黑色顶边，让刘海"看起来被砍掉了"。壁纸不改，随时可关。
+**English** · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Français](README.fr.md) · [Português](README.pt-BR.md)
 
-![顶部是一条完整的黑，正文区域四角统一收圆](docs/screenshot-1.jpg)
-![菜单栏右侧的状态栏图标，点一下即可开关](docs/screenshot-2.jpg)
+![Platform](https://img.shields.io/badge/platform-macOS%2013%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-1.3.3-lightgrey)
+![No network](https://img.shields.io/badge/network-none-success)
 
-## 特点
+**Make the notch disappear.** A tiny open-source macOS menu bar app that blacks out the top bar so the notch blends into one solid black edge — your wallpaper is never touched. Optionally rounds the corners of the desktop.
 
-- **不动壁纸**：在菜单栏下方垫一层纯黑窗口，不是改图片
-- **零输入监控**：不申请辅助功能权限，不监听键鼠，不联网
-- **自动让位**：全屏应用、菜单栏隐藏、切到"刘海下方"分辨率时自动收起
-- **多显示器安全**：只在带刘海的屏幕上生效
-- **模拟屏幕圆角**：正文区域四角统一收圆，半径可调；只画在桌面层，全屏与游戏不受影响
-- **通用二进制**：Apple 芯片与 Intel 同一安装包
+![The menu bar becomes one solid black edge, the desktop below gets rounded corners](docs/screenshot-1.jpg)
+![The status bar icon, one click to toggle](docs/screenshot-2.jpg)
 
-## 系统要求
+---
 
-- macOS 13 Ventura 或更高
-- 带刘海的 MacBook（14/16 寸 MacBook Pro，M2 起的 MacBook Air）
+## Why another notch app?
 
-没有刘海的机器可以安装，但不会产生效果。
+Most notch apps go the other way: they turn the notch into a Dynamic Island — music controls, timers, file shelves. This one does the opposite. It removes the notch from view, the way you'd hide a bezel.
 
-## 安装
+**Unlike wallpaper-based fixes, nothing is baked into an image:**
 
-从 Releases 下载 `FuckBangs-1.3.3.dmg`，拖进「应用程序」。
+- Your wallpaper stays yours — **dynamic wallpapers keep working**
+- One click to turn it off, and your screen is exactly as it was
+- No screen recording, no accessibility permission, no network, no telemetry
 
-首次打开会被 Gatekeeper 拦下（因为没有 Apple 开发者账号做公证）：
+## Features
 
-1. 双击一次，看到提示点「完成」
-2. 系统设置 → 隐私与安全性 → 安全性 → 「仍要打开」
-3. 输入密码，确认打开
+- **Solid black menu bar** — the notch merges into the top edge and stops drawing attention
+- **Rounded screen corners** — the content area becomes one rounded rectangle; radius adjustable 8–48 pt
+- **Full-screen aware** — disappears automatically for full-screen video, games and presentations, comes back when you leave
+- **Multi-display safe** — only acts on displays that actually have a notch; external monitors keep their square corners
+- **Resolution aware** — adapts when you switch to a "below the notch" scaled mode
+- **Space aware** — corners slide in and out with your desktops, no flicker during the transition
+- **No permissions** — no accessibility, no screen recording, no camera
+- **Universal binary** — Apple Silicon and Intel in one app
 
-macOS 15 之后「右键 → 打开」的旧绕过方式已失效，只能用上面这条路。
+## How it compares
 
-## 用法
+|  | This app | TopNotch | NotchNook | Boring Notch |
+|---|---|---|---|---|
+| Hides the notch | ✅ | ✅ via wallpaper | ❌ makes it useful | ❌ makes it useful |
+| Wallpaper modified | **Never** | Yes | – | – |
+| Dynamic wallpapers | ✅ | ❌ | – | – |
+| Rounded screen corners | ✅ live overlay | ✅ baked into wallpaper | ❌ | ❌ |
+| Open source | ✅ MIT | ❌ | ❌ | ✅ GPL-3.0 |
+| Price | Free | Free | Paid | Free |
 
-- 状态栏图标 **左键**：快捷面板，六个开关直接切
-- 状态栏图标 **右键**：菜单（打开主界面 / 停用 / 退出）
-- 程序坞图标：打开主界面
+*Comparison reflects public information as of November 2026; corrections welcome via issues.*
 
-![主界面](docs/screenshot-settings.png)
+## Install
 
-## 从源码构建
+1. Download `FuckBangs-1.3.3.dmg` from [Releases](../../releases/latest)
+2. Drag the app into **Applications**
+3. First launch is blocked by Gatekeeper (the app isn't notarized — no Apple Developer account). Fix it in **System Settings → Privacy & Security → "Open Anyway"**, then confirm with your password.
 
-不需要 Xcode 工程，只要装了 Xcode 命令行工具：
+> The old right-click → Open trick stopped working in macOS 15 Sequoia. The Settings route above is the only way now.
+
+**Requirements:** macOS 13 Ventura or later. A MacBook with a notch (14"/16" MacBook Pro, MacBook Air M2 and later). On other Macs the app installs fine but does nothing.
+
+## Usage
+
+- **Status bar icon, left click** — quick panel with all six switches
+- **Status bar icon, right click** — menu: open settings, disable, quit
+- **Dock icon** — opens the settings window
+
+## FAQ
+
+<details>
+<summary><b>Can the notch actually be removed?</b></summary>
+
+No — it's a camera cutout, physical hardware. What this app removes is the *visual* discomfort: by making the whole top bar pure black, the notch stops reading as a gap. On a mini-LED display the black levels match so closely that the notch effectively vanishes.
+</details>
+
+<details>
+<summary><b>Does it change my wallpaper?</b></summary>
+
+No. The black bar and the rounded corners are live overlay windows drawn above the desktop and below your app windows. Your wallpaper file is never read or written, so dynamic wallpapers keep animating.
+</details>
+
+<details>
+<summary><b>Will it interfere with full-screen apps or games?</b></summary>
+
+No. The overlays sit below normal windows, so full-screen content covers them completely. The top bar additionally detects full-screen mode and gets out of the way by itself.
+</details>
+
+<details>
+<summary><b>Does it work on external monitors?</b></summary>
+
+It only acts on displays with a notch. External monitors are usually square-cornered, so they're left alone on purpose.
+</details>
+
+<details>
+<summary><b>Is it safe? Does it phone home?</b></summary>
+
+There is no networking code in the app at all. It requests no accessibility or screen-recording permission. Everything it stores is six switch states and one window position, in local `UserDefaults`.
+</details>
+
+<details>
+<summary><b>Why does macOS say "cannot verify the developer"?</b></summary>
+
+The app is signed locally (ad-hoc) because Apple notarization requires a paid developer account. The steps under [Install](#install) get you past it once, permanently.
+</details>
+
+## Build from source
+
+No Xcode project needed — just the command line tools:
 
 ```bash
-./build.sh     # 交叉编译 arm64 + x86_64，lipo 合并，安装到 /Applications
-./package.sh   # 生成 dist/FuckBangs-1.3.3.dmg
+./build.sh     # cross-compiles arm64 + x86_64, merges with lipo, installs to /Applications
+./package.sh   # produces dist/FuckBangs-VERSION.dmg
 ```
 
-重新生成图标：
+Regenerate the icon:
 
 ```bash
 swift tools/make_icon.swift Assets/icon_1024.png
 ```
 
-## 调试参数
+## Implementation notes
 
-| 参数 | 作用 |
+- The top bar is an `NSWindow` at `CGWindowLevelForKey(.mainMenuWindow) - 1`: below the menu bar, above normal windows, with `ignoresMouseEvents` so clicks pass through
+- The corners are drawn by a second window at level `-1`, filling `evenOdd(screen rect − content rect)`
+- That window **must** use `.fullScreenNone`. With `.fullScreenAuxiliary` it follows into full-screen Spaces, and whether it slides back with the desktop then depends on WindowServer's occlusion culling — Chrome culls it, Safari doesn't, and the same bug shows up as "depends on which app you came from"
+- Full-screen detection can't rely on `visibleFrame`; when matching layer-0 windows, accept both "covers the whole screen" and "sits below the notch (`safeAreaInsets.top` shorter)"
+- Use a plain `NSWindow` for the corner overlay — a subclass overriding `canBecomeKey = false` ends up not being composited at all
+
+## Debug flags
+
+| Flag | Purpose |
 |---|---|
-| `--selftest` | 打印屏幕参数、刘海宽度、登录项状态后退出 |
-| `--render <dir>` | 把快捷面板和主界面离屏渲染成 PNG（配合 `NB_DARK=1` 出深色版） |
-| `--show-window` | 启动后直接打开主界面 |
-| `--show-quick` | 启动后直接弹出快捷面板 |
+| `--selftest` | prints screen geometry, notch width, login item state and exits |
+| `--render <dir>` | renders the quick panel and settings window to PNG (`NB_DARK=1` for dark) |
+| `--show-window` | opens the settings window on launch |
+| `--show-quick` | opens the quick panel on launch |
 
-## 实现要点
+## License
 
-- 浮层是 `NSWindow`，层级 `CGWindowLevelForKey(.mainMenuWindow) - 1`，垫在菜单栏下面、普通窗口上面，`ignoresMouseEvents` 让点击穿透
-- 圆角由另一个窗口绘制，层级 `-1`（桌面之上、窗口之下），绘制 `evenOdd(整屏矩形 − 正文矩形)`：正文矩形从状态栏下沿开始，四个角同一个半径
-- 圆角窗口的 `collectionBehavior` **必须用 `.fullScreenNone`**。如果声明 `.fullScreenAuxiliary` 让它跟进全屏 Space，那么从全屏滑回桌面时，窗口能否随桌面一起滑入就取决于 WindowServer 的遮挡剔除——Chrome 的合成层不透明会触发剔除（圆角要等转场结束），Safari 的半透明材质不会（圆角中途就出现）。同一个 bug 会表现为"看应用下菜"
-- 全屏检测不能靠 `visibleFrame`（不随全屏空间变化）。在 `CGWindowList` 里找 layer 0 窗口时，高度要同时接受"覆盖整屏"和"刘海下方（少 `safeAreaInsets.top`）"两种几何，否则带刘海机型永远匹配不上
-- 圆角窗口**不能用带 `canBecomeKey = false` 的子类**，会导致内容不参与合成、画了看不见；用原生 `NSWindow` 即可
-- `NSWindow` 默认的 `constrainFrameRect` 会把窗口压到菜单栏下方，顶部黑条那个窗口必须重写
-
-## 许可
-
-MIT，见 [LICENSE](LICENSE)。
+MIT — see [LICENSE](LICENSE).
